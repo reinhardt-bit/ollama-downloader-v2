@@ -1,4 +1,4 @@
-[![Build](https://github.com/reinhardt-bit/ollama-downloader-v2/actions/workflows/go.yml/badge.svg)](https://github.com/reinhardt-bit/ollama-downloader-v2/actions/workflows/go.yml)
+[![Build](https://github.com/reinhardt-bit/ollama-downloader-v2/actions/workflows/go.yml/badge.svg)](https://github.com/reinhardt-bit/ollama-downloader-v2/actions/workflows/go.yml) ![Tests](https://github.com/reinhardt-bit/ollama-downloader-v2/actions/workflows/go.yml/badge.svg)
 
 # Ollama Downloader v2
 
