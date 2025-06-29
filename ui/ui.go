@@ -68,11 +68,11 @@ type Model struct {
 	quitting       bool
 	selectedChoice string
 	showList       bool
-	quitUICh       chan<- struct{}
-	userChoiceCh   chan<- string
+	quitUICh       chan struct{}
+	userChoiceCh   chan string
 }
 
-func NewModel(modelToPull string, host string, cancel context.CancelFunc, quitUICh chan<- struct{}, userChoiceCh chan<- string) Model {
+func NewModel(modelToPull string, host string, cancel context.CancelFunc, quitUICh chan struct{}, userChoiceCh chan string) Model {
 	items := []list.Item{
 		item("Continue (until next error)"),
 		item("Continue (until download completed)"),
@@ -155,6 +155,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case client.ErrorMsg:
 		m.status = fmt.Sprintf("Error: %s", msg.Err)
+		m.selectedChoice = "Quit"
 		close(m.quitUICh)
 		m.userChoiceCh <- "Quit"
 		return m, tea.Quit
