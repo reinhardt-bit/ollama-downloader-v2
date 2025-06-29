@@ -15,8 +15,8 @@ import (
 )
 
 const (
-	padding  = 2
-	maxWidth = 80
+	padding    = 2
+	maxWidth   = 80
 	listHeight = 14
 )
 
@@ -63,19 +63,19 @@ type Model struct {
 	modelToPull string
 	host        string
 	cancel      context.CancelFunc
-	
-	list          list.Model
-	quitting      bool
+
+	list           list.Model
+	quitting       bool
 	selectedChoice string
-	showList      bool // New field to control when to show the list
-	quitUICh      chan<- struct{} // Channel to signal main.go to quit the UI
-	userChoiceCh  chan<- string   // Channel to send user's choice to PullModel
+	showList       bool
+	quitUICh       chan<- struct{}
+	userChoiceCh   chan<- string
 }
 
 func NewModel(modelToPull string, host string, cancel context.CancelFunc, quitUICh chan<- struct{}, userChoiceCh chan<- string) Model {
 	items := []list.Item{
 		item("Continue (until next error)"),
-		item("Continue (until download completed)"),		
+		item("Continue (until download completed)"),
 		item("Quit"),
 	}
 
@@ -88,14 +88,14 @@ func NewModel(modelToPull string, host string, cancel context.CancelFunc, quitUI
 	l.Styles.HelpStyle = helpStyle
 
 	return Model{
-		progress:    progress.New(progress.WithDefaultGradient()),
-		status:      "Connecting to Ollama...",
-		modelToPull: modelToPull,
-		host:        host,
-		cancel:      cancel,
-		list:        l,
-		showList:    false,
-		quitUICh:    quitUICh,
+		progress:     progress.New(progress.WithDefaultGradient()),
+		status:       "Connecting to Ollama...",
+		modelToPull:  modelToPull,
+		host:         host,
+		cancel:       cancel,
+		list:         l,
+		showList:     false,
+		quitUICh:     quitUICh,
 		userChoiceCh: userChoiceCh,
 	}
 }
@@ -119,8 +119,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "q", "ctrl+c":
 			m.quitting = true
 			m.selectedChoice = "Quit"
-			close(m.quitUICh) // Signal main.go to quit the UI
-			m.userChoiceCh <- m.selectedChoice // Send choice to PullModel
+			close(m.quitUICh)
+			m.userChoiceCh <- m.selectedChoice
 			return m, tea.Quit
 
 		case "enter":
@@ -129,13 +129,13 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				if ok {
 					m.selectedChoice = string(i)
 				}
-				close(m.quitUICh) // Signal main.go to quit the UI
-				m.userChoiceCh <- m.selectedChoice // Send choice to PullModel
+				close(m.quitUICh)
+				m.userChoiceCh <- m.selectedChoice
 				return m, tea.Quit
 			}
 
 		}
-		
+
 		var cmd tea.Cmd
 		if m.showList {
 			m.list, cmd = m.list.Update(msg)
@@ -155,8 +155,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case client.ErrorMsg:
 		m.status = fmt.Sprintf("Error: %s", msg.Err)
-		close(m.quitUICh) // Signal main.go to quit the UI on error
-		m.userChoiceCh <- "Quit" // Ensure PullModel is unblocked
+		close(m.quitUICh)
+		m.userChoiceCh <- "Quit"
 		return m, tea.Quit
 
 	case progress.FrameMsg:

@@ -9,9 +9,10 @@ import (
 	"os"
 	"time"
 
-	tea "github.com/charmbracelet/bubbletea"
 	"ollama-downloader-v2/client"
 	"ollama-downloader-v2/ui"
+
+	tea "github.com/charmbracelet/bubbletea"
 )
 
 func main() {
@@ -61,30 +62,21 @@ func main() {
 
 		log.Printf("Starting download for model: %s from host: %s", modelName, host)
 
-		// Create a new context for each download attempt
 		ctx, cancel := context.WithCancel(context.Background())
-		// The cancel function will be called when the UI exits or when the loop iteration finishes.
-		// This ensures the PullModel goroutine's context is cancelled.
 
 		progressCh := make(chan tea.Msg)
-		// Channel to signal the UI to quit from the PullModel goroutine
 		quitUICh := make(chan struct{})
-		// Channel to send user's choice from UI to PullModel
 		userChoiceCh := make(chan string) // Unbuffered channel
 
 		model := ui.NewModel(modelName, host, cancel, quitUICh, userChoiceCh) // Pass userChoiceCh to UI
 		p := tea.NewProgram(model)
 
-		// Start PullModel in a goroutine
 		go client.PullModel(ctx, modelName, host, progressCh, continueUntilComplete, userChoiceCh)
 
-		// Goroutine to send messages from client to UI
 		go func() {
 			for msg := range progressCh {
 				p.Send(msg)
 			}
-			// When progressCh is closed (meaning PullModel has finished),
-			// signal the UI to quit if it hasn't already.
 			select {
 			case <-quitUICh: // UI already quit
 			default:
@@ -92,11 +84,8 @@ func main() {
 			}
 		}()
 
-		// Run the Bubble Tea program
 		finalModel, err := p.Run()
 		if err != nil {
-			// If the error is context cancellation/timeout, it means the UI was dismissed
-			// and we should proceed to process the selected choice.
 			if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
 				log.Printf("Program exited due to context cancellation/timeout: %v\n", err)
 			} else {
@@ -106,7 +95,6 @@ func main() {
 			}
 		}
 
-		// Ensure the context for the current attempt is cancelled
 		cancel()
 
 		appModel := finalModel.(ui.Model)
@@ -115,28 +103,22 @@ func main() {
 		switch selectedChoice {
 		case "Continue (until next error)":
 			continueUntilComplete = false
-			log.Println("Continuing download (single retry)...\n")
-			// No need to `continue` here, the loop will naturally continue.
+			log.Println("Continuing download (single retry)...")
 		case "Continue (until download completed)":
 			continueUntilComplete = true
-			log.Println("Continuing download (until complete)....\n")
-			// No need to `continue` here, the loop will naturally continue.
+			log.Println("Continuing download (until complete)....")
 		case "Quit":
-			log.Println("Quitting download.\n")
+			log.Println("Quitting download.")
 			shouldQuit = true
 		default:
-			// This case is hit if the download completes successfully or if an unknown choice is made.
-			// If continueUntilComplete is true, it means the download finished successfully
-			// and we should exit the loop.
 			if continueUntilComplete {
-				log.Println("Download completed successfully.\n")
+				log.Println("Download completed successfully.")
 				shouldQuit = true
 			} else {
-				log.Println("Download finished or unknown choice, quitting.\n")
+				log.Println("Download finished or unknown choice, quitting.")
 				shouldQuit = true
 			}
 		}
-		// Add a small delay to allow goroutines to clean up before next iteration
 		time.Sleep(100 * time.Millisecond)
 	}
 
