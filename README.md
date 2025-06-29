@@ -19,7 +19,9 @@ A standalone, command-line tool for downloading Ollama models with an interactiv
 *   **Resumable Downloads:** Leverages Ollama's built-in resume functionality to continue interrupted downloads.
 *   **Graceful Cancellation:** Users can cancel the download at any point using `q` or `Ctrl+C`.
 
-![ollama-downloader-v2 preview](./assets/ollama-downloader-v2.png)
+<p align="center">
+  <img src="./assets/ollama-downloader-v2.png" alt="ollama-downloader-v2 preview" width="450"/>
+</p>
 
 ## Installation
 
