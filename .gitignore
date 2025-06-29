@@ -34,3 +34,8 @@ go.work.sum
 
 # Log file
 *.log
+
+# Plan files
+ollama_downloader_plan.md
+
+.gitignore
