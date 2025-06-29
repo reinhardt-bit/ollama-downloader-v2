@@ -2,7 +2,7 @@
 
 A standalone, command-line tool for downloading Ollama models with an interactive progress bar and robust error handling, including resumable downloads and user-controlled retry options.
 
-![ollama-downloader-v2 preview](assets/ollama-downloader-v2.png)
+![ollama-downloader-v2 preview](./assets/ollama-downloader-v2.png)
 
 ## Features
 
