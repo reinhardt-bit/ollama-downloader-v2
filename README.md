@@ -1,3 +1,5 @@
+[![Build](https://github.com/reinhardt-bit/ollama-downloader-v2/actions/workflows/go.yml/badge.svg)](https://github.com/reinhardt-bit/ollama-downloader-v2/actions/workflows/go.yml)
+
 # Ollama Downloader v2
 
 <p align="center">
