@@ -18,14 +18,13 @@ A standalone, command-line tool for downloading Ollama models with an interactiv
 
 ## Installation
 
-To install `ollama-downloader-v2`, you need to have Go (version 1.18 or higher recommended) installed on your system.
+To install `ollama-downloader-v2`, you need to have Go (version 1.24 or higher recommended) installed on your system.
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/ollama-downloader-v2.git
+    git clone https://github.com/reinhardt-bit/ollama-downloader-v2.git
     cd ollama-downloader-v2
     ```
-    *(Note: Replace `your-username` with your actual GitHub username or the repository's location.)*
 
 2.  **Build the executable:**
     ```bash
