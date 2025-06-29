@@ -1,8 +1,12 @@
 # Ollama Downloader v2
 
+![Llama pulling cart](./assets/llamaPullingCart.png)
+<p align="center">
+  <img src="./assets/llamaPullingCart.png" alt="Llama pulling cart" width="300"/>
+</p>
+
 A standalone, command-line tool for downloading Ollama models with an interactive progress bar and robust error handling, including resumable downloads and user-controlled retry options.
 
-![ollama-downloader-v2 preview](./assets/ollama-downloader-v2.png)
 
 ## Features
 
@@ -15,6 +19,8 @@ A standalone, command-line tool for downloading Ollama models with an interactiv
     *   **Quit:** Terminate the program.
 *   **Resumable Downloads:** Leverages Ollama's built-in resume functionality to continue interrupted downloads.
 *   **Graceful Cancellation:** Users can cancel the download at any point using `q` or `Ctrl+C`.
+
+![ollama-downloader-v2 preview](./assets/ollama-downloader-v2.png)
 
 ## Installation
 
