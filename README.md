@@ -20,7 +20,7 @@ A standalone, command-line tool for downloading Ollama models with an interactiv
 *   **Graceful Cancellation:** Users can cancel the download at any point using `q` or `Ctrl+C`.
 
 <p align="center">
-  <img src="./assets/ollama-downloader-v2.png" alt="ollama-downloader-v2 preview" width="450"/>
+  <img src="./assets/ollama-downloader-v2.png" alt="ollama-downloader-v2 preview" width="600"/>
 </p>
 
 ## Installation
