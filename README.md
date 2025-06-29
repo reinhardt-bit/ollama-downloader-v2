@@ -1,6 +1,5 @@
 # Ollama Downloader v2
 
-![Llama pulling cart](./assets/llamaPullingCart.png)
 <p align="center">
   <img src="./assets/llamaPullingCart.png" alt="Llama pulling cart" width="300"/>
 </p>
